@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AI 創作工作台｜LINE 貼圖互動操作</title>
+  <style>
+    :root{--ink:#17211d;--muted:#68756f;--paper:#f5f3ec;--card:#fffdf8;--line:#dddcd3;--green:#08b968;--deep:#07553b;--lime:#dfff73;--orange:#ff8a58;--purple:#8d70ff;--shadow:0 14px 35px #193b2c12}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC",sans-serif}
+    button,input,a{font:inherit}.shell{display:grid;grid-template-columns:260px 1fr;min-height:100vh}.side{background:var(--deep);color:#fff;padding:26px 22px;position:sticky;top:0;height:100vh}.brand{display:flex;gap:12px;align-items:center}.logo{width:46px;height:46px;border-radius:15px;background:var(--lime);color:var(--deep);display:grid;place-items:center;font-size:24px;font-weight:900;transform:rotate(-4deg)}.brand h1{font-size:17px;margin:0;line-height:1.3}.brand small{color:#b8d5c8}.nav{margin:34px 0;display:grid;gap:7px}.nav button{border:0;background:transparent;color:#d8ebe2;padding:11px 12px;border-radius:12px;text-align:left;cursor:pointer}.nav button:hover,.nav button.active{background:#ffffff18;color:#fff}.side-note{position:absolute;bottom:22px;left:22px;right:22px;border-top:1px solid #ffffff22;padding-top:15px;color:#b8d5c8;font-size:12px;line-height:1.6}
+    main{padding:28px 34px 70px;min-width:0}.top{display:flex;justify-content:space-between;align-items:center;gap:22px}.eyebrow{text-transform:uppercase;letter-spacing:.14em;color:var(--green);font-size:11px;font-weight:800}.top h2{font-size:clamp(27px,4vw,46px);letter-spacing:-.04em;margin:6px 0}.top p{color:var(--muted);margin:0}.search{width:min(330px,38vw);border:1px solid var(--line);background:var(--card);border-radius:16px;padding:13px 16px;outline:none}.search:focus{border-color:var(--green);box-shadow:0 0 0 3px #08b96820}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:27px 0}.stat{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}.stat strong{display:block;font-size:28px}.stat span{font-size:12px;color:var(--muted)}.stat.green{background:var(--green);color:#fff;border-color:transparent}.stat.green span{color:#eafff5}
+    .section{margin-top:38px;scroll-margin-top:20px}.section-head{display:flex;align-items:end;justify-content:space-between;margin-bottom:14px}.section h3{font-size:22px;margin:0}.section-head p{font-size:13px;color:var(--muted);margin:0}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}.card{grid-column:span 4;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow);position:relative;overflow:hidden}.card.wide{grid-column:span 8}.card.full{grid-column:1/-1}.tag{display:inline-flex;align-items:center;padding:5px 9px;border-radius:99px;background:#e9f8ef;color:var(--deep);font-size:11px;font-weight:800}.card h4{font-size:18px;margin:13px 0 8px}.card p,.card li{font-size:13px;line-height:1.65;color:#52615a}.card ul{padding-left:20px;margin-bottom:0}.prompt{background:#17211d;color:#e9f8ef;border-radius:14px;padding:15px;font-size:13px;line-height:1.65;margin-top:13px;white-space:pre-wrap}.copy{border:0;border-radius:10px;background:var(--lime);color:var(--deep);font-weight:800;padding:9px 12px;cursor:pointer;margin-top:10px}.copy:hover{transform:translateY(-1px)}
+    .sticker-board{display:grid;grid-template-columns:repeat(8,1fr);gap:9px;margin-top:14px}.sticker{aspect-ratio:1;border:1px dashed #bdc6c0;border-radius:15px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;transition:.2s}.sticker b{font-size:13px}.sticker span{font-size:19px}.sticker.done{background:#dff9e9;border-style:solid;border-color:var(--green)}.progress{height:9px;background:#e4e6df;border-radius:99px;overflow:hidden;margin-top:14px}.bar{height:100%;width:0;background:var(--green);transition:.25s}.progress-label{font-size:12px;color:var(--muted);margin-top:6px}
+    .links{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:13px}.link{display:flex;justify-content:space-between;align-items:center;text-decoration:none;color:var(--ink);background:#f1f1eb;border-radius:12px;padding:11px 12px;font-size:12px}.link:hover{background:#e3f7ea;color:var(--deep)}.steps{counter-reset:s}.step{display:grid;grid-template-columns:36px 1fr;gap:10px;margin-top:13px}.step:before{counter-increment:s;content:counter(s);width:30px;height:30px;border-radius:10px;background:var(--orange);color:#fff;display:grid;place-items:center;font-weight:900}.step b{font-size:13px}.step p{margin:3px 0}
+    .hidden{display:none!important}.toast{position:fixed;right:24px;bottom:24px;background:var(--ink);color:#fff;padding:12px 16px;border-radius:12px;opacity:0;transform:translateY(10px);transition:.2s;pointer-events:none}.toast.show{opacity:1;transform:none}.accent{position:absolute;width:100px;height:100px;border-radius:50%;background:var(--purple);filter:blur(0);opacity:.12;right:-40px;top:-40px}
+    @media(max-width:950px){.shell{grid-template-columns:1fr}.side{height:auto;position:relative;padding:16px 20px}.brand small,.side-note{display:none}.nav{display:flex;overflow:auto;margin:14px 0 0}.nav button{white-space:nowrap}.card,.card.wide{grid-column:span 6}.sticker-board{grid-template-columns:repeat(4,1fr)}main{padding:24px}}
+    @media(max-width:620px){.top{align-items:flex-start;flex-direction:column}.search{width:100%}.stats{grid-template-columns:repeat(2,1fr)}.card,.card.wide{grid-column:1/-1}.links{grid-template-columns:1fr}.sticker-board{grid-template-columns:repeat(4,1fr)}main{padding:20px 15px 55px}}
+  </style>
+</head>
+<body>
+<div class="shell">
+  <aside class="side">
+    <div class="brand"><div class="logo">AI</div><div><h1>創作工作台</h1><small>LINE 貼圖互動操作</small></div></div>
+    <nav class="nav">
+      <button class="active" data-go="overview">總覽</button><button data-go="games">已完成遊戲</button><button data-go="stickers">LINE 貼圖</button><button data-go="figures">公仔與形象</button><button data-go="video">影片生成</button><button data-go="nutrition">精準營養 AI</button>
+    </nav>
+    <div class="side-note">來源：〈Line 貼圖互動操作.docx〉<br>內容已整理為 4 條創作流程。</div>
+  </aside>
+  <main>
+    <header class="top" id="overview"><div><div class="eyebrow">Creative command center</div><h2>把靈感變成作品。</h2><p>集中提示詞、工具連結與製作進度，從這裡開始。</p></div><input class="search" id="search" placeholder="搜尋提示詞、工具或主題…"></header>
+    <section class="stats"><div class="stat green"><strong>5</strong><span>創作主題</span></div><div class="stat"><strong>3</strong><span>已完成遊戲</span></div><div class="stat"><strong>16</strong><span>LINE 貼圖目標</span></div><div class="stat"><strong>12</strong><span>影片口白目標</span></div></section>
+
+    <section class="section searchable" id="games" data-key="遊戲 六大類食物 配對 像素遊戲中心 食安 營養 ghp 對決">
+      <div class="section-head"><div><div class="eyebrow">Completed / Play now</div><h3>已完成遊戲</h3></div><p>3 款作品，點擊即可遊玩</p></div>
+      <div class="grid">
+        <article class="card"><div class="accent"></div><span class="tag">配對遊戲</span><h4>六大類食物配對大賽</h4><p>透過輕鬆的配對玩法，熟悉六大類食物與營養分類。</p><div class="links"><a class="link" href="https://gorgeous-nasturtium-c252f8.netlify.app/" target="_blank" rel="noopener">開始遊戲 ↗</a></div></article>
+        <article class="card"><div class="accent"></div><span class="tag">遊戲合集</span><h4>像素遊戲中心</h4><p>復古像素風格的遊戲入口，集中瀏覽並開啟不同小遊戲。</p><div class="links"><a class="link" href="https://shen0524.github.io/pixel-game-center/" target="_blank" rel="noopener">進入遊戲中心 ↗</a></div></article>
+        <article class="card"><div class="accent"></div><span class="tag">知識對戰</span><h4>食安・營養・GHP 對決</h4><p>結合食品安全、營養與 GHP 主題的互動對戰總入口。</p><div class="links"><a class="link" href="https://shen0524.github.io/duel-hub/" target="_blank" rel="noopener">進入食安對戰 ↗</a></div></article>
+      </div>
+    </section>
+
+    <section class="section searchable" id="stickers" data-key="line 貼圖 問候 營養 呷飽沒 可愛 搞笑 浮誇">
+      <div class="section-head"><div><div class="eyebrow">01 / Stickers</div><h3>LINE 貼圖基本包</h3></div><p>點選格子標記完成</p></div>
+      <div class="grid"><article class="card wide"><div class="accent"></div><span class="tag">16 張製作看板</span><h4>「問候大家營養沒」系列</h4><div class="sticker-board" id="board"></div><div class="progress"><div class="bar" id="bar"></div></div><div class="progress-label" id="progressLabel">已完成 0 / 16</div></article>
+      <article class="card"><span class="tag">方向</span><h4>視覺設定</h4><ul><li>Q 版 LINE 貼圖</li><li>可愛／搞笑／浮誇表情擇一</li><li>以營養與日常問候為主題</li><li>口吻可參考「呷飽沒」</li></ul></article>
+      <article class="card wide"><span class="tag">可直接使用</span><h4>核心提示詞</h4><div class="prompt" id="stickerPrompt">製作一套可愛 Q 版 LINE 貼圖，主題為「問候大家營養沒」。設計 16 組貼近日常、簡短好讀的營養問候題詞，例如「呷飽沒」，搭配可愛、搞笑或浮誇的表情與動作。每張構圖清楚、角色一致、文字醒目，適合聊天情境使用。</div><button class="copy" data-copy="stickerPrompt">複製提示詞</button></article>
+      <article class="card"><span class="tag">範例與上架</span><h4>快速入口</h4><div class="links"><a class="link" href="https://gemini.google.com/share/dd443c9b5c83" target="_blank">Gemini 範例 ↗</a><a class="link" href="https://chatgpt.com/share/69144759-1924-8010-b715-ab393f8a3c2e" target="_blank">ChatGPT 範例 ↗</a><a class="link" href="https://chatgpt.com/c/69ef6299-8678-83a2-adcc-e823e40cecb9" target="_blank">ChatGPT 對話 ↗</a><a class="link" href="https://creator.line.me/zh-hant/" target="_blank">LINE Creators Market ↗</a></div></article></div>
+    </section>
+
+    <section class="section searchable" id="figures" data-key="手辦 足球 搖頭公仔 企業形象 海報 寫實 zbrush bandai">
+      <div class="section-head"><div><div class="eyebrow">02 / Visual identity</div><h3>公仔與企業形象</h3></div><p>兩種商業視覺方向</p></div>
+      <div class="grid"><article class="card"><span class="tag">1/7 比例手辦</span><h4>桌上型商業實拍</h4><p>真實環境、透明圓形壓克力底座；螢幕呈現 ZBrush 建模過程，旁置 BANDAI 風格原畫包裝盒。</p><div class="links"><a class="link" href="https://gemini.google.com/app/569a1068c979f335?utm_source=app_launcher&utm_medium=owned&utm_campaign=base_all" target="_blank">開啟 Gemini ↗</a></div></article>
+      <article class="card"><span class="tag">足球搖頭公仔</span><h4>2026 世界盃主題</h4><div class="prompt" id="footballPrompt">足球搖頭公仔電商實拍風，參考上傳圖片，不複製真實外型。超大膠質公仔，帶塗裝瑕疵與接縫線。正面四分之三角度，綠色足球場底座，2026 世界盃德國隊球衣，腳邊放足球。黃昏背景、淺景深、置中構圖。避免動漫風、精品風、超寫實 CGI。</div><button class="copy" data-copy="footballPrompt">複製提示詞</button><div class="links"><a class="link" href="https://chatgpt.com/c/6a3872f8-4830-83ee-8b88-d9c3abd949af" target="_blank">開啟範例 ↗</a></div></article>
+      <article class="card wide"><span class="tag">企業形象海報</span><h4>YOU-CHENG SHEN｜Premium Executive Portrait</h4><p>以人物照片忠實還原臉型、眼鏡、髮型與膚色；輕 Q 版比例、全身入鏡、倚靠極簡牆面。黑色訂製西裝與白襯衫，呈現專業學者、教育者與企業領袖氣質。</p><div class="prompt" id="portraitPrompt">超寫實輕 Q 版人物企業形象海報，忠實保留上傳人物的臉部特徵、眼鏡、髮型與膚色。全身自然站姿，倚靠淺灰白極簡牆面，一腳微彎、雙手抱胸、自信微笑。穿黑色高級訂製西裝、白襯衫、黑色長褲與亮面牛津鞋。高級攝影棚、柔和自然光、專業棚燈、電影級光影、商業雜誌封面構圖。右側大型立體浮雕字「YOU-CHENG SHEN」，下方排列「AI EDUCATOR / RESEARCHER / NUTRITION Ph.D. / PROFESSOR」。photorealistic, premium executive portrait, luxury corporate branding, ultra sharp details, depth of field, 8K.</div><button class="copy" data-copy="portraitPrompt">複製提示詞</button><div class="links"><a class="link" href="https://chatgpt.com/c/6a360ab7-bc20-83ee-ae06-bcd3c0360528" target="_blank">開啟範例 ↗</a></div></article></div>
+    </section>
+
+    <section class="section searchable" id="video" data-key="影片 百萬 youtuber 口白 mootioon flexclip gemini storybook ovideo 折扣碼">
+      <div class="section-head"><div><div class="eyebrow">03 / Video</div><h3>影片生成流程</h3></div><p>從腳本到成片</p></div>
+      <div class="grid"><article class="card wide"><span class="tag">4 步驟</span><div class="step"><div><b>生成 12 段口白</b><p>先用 AI 產出輕鬆、故事感的宣傳稿。</p></div></div><div class="step"><div><b>建立故事與畫面</b><p>用 Mootion 或 Gemini Storybook 延伸敘事。</p></div></div><div class="step"><div><b>剪輯與整合</b><p>在 FlexClip 編輯字幕、節奏與素材。</p></div></div><div class="step"><div><b>產生影片</b><p>可用 Ovideo AI 製作成片；折扣碼：<strong>NDKBLLSG</strong></p></div></div></article>
+      <article class="card"><span class="tag">口白提示詞</span><div class="prompt" id="videoPrompt">我要你扮演百萬 YouTuber。這次影片要宣傳「XXX」，影片風格輕鬆有趣，像在說故事一般。不用描述畫面，只需要生成 12 段口白。</div><button class="copy" data-copy="videoPrompt">複製提示詞</button></article>
+      <article class="card full"><span class="tag">工具箱</span><div class="links"><a class="link" href="https://storyteller.mootion.com/referral?code=hinyP4nqYaf" target="_blank">Mootion Storyteller ↗</a><a class="link" href="https://www.flexclip.com/tw/editor/app" target="_blank">FlexClip 編輯器 ↗</a><a class="link" href="https://gemini.google.com/gem/storybook" target="_blank">Gemini Storybook ↗</a><a class="link" href="https://ovideo.ai/zh/" target="_blank">Ovideo AI ↗</a></div></article></div>
+    </section>
+
+    <section class="section searchable" id="nutrition" data-key="精準營養 ai gpt 範例">
+      <div class="section-head"><div><div class="eyebrow">04 / Nutrition</div><h3>精準營養 AI</h3></div><p>專屬 GPT 與對話範例</p></div>
+      <div class="grid"><article class="card wide"><span class="tag">專屬助手</span><h4>精準營養 AI GPT</h4><p>集中營養主題的問答、內容生成與應用示範，可由下方直接開啟。</p><div class="links"><a class="link" href="https://chatgpt.com/g/g-q9ybNd0LM-jing-zhun-ying-yang-ai" target="_blank">開啟精準營養 AI ↗</a><a class="link" href="https://chatgpt.com/share/6763bf11-49ec-8010-a63b-04abbd754f45" target="_blank">查看對話範例 ↗</a></div></article><article class="card"><span class="tag">文件註記</span><h4>影片工具資料</h4><p>原文件記載：120 次觀看、更新時間 02-11、by 沈祐成。</p></article></div>
+    </section>
+  </main>
+</div><div class="toast" id="toast">已複製到剪貼簿</div>
+<script>
+const phrases=['呷飽沒','早餐吃了嗎','今天有蔬菜嗎','水喝夠了嗎','記得吃水果','蛋白質補了嗎','少糖更有精神','午餐要均衡','晚餐別太晚','今天動一動','吃原型食物','別忘了纖維','慢慢吃喔','營養滿分','健康打卡','明天也加油'];
+const board=document.querySelector('#board');const saved=JSON.parse(localStorage.getItem('stickerProgress')||'[]');
+phrases.forEach((p,i)=>{let b=document.createElement('button');b.className='sticker'+(saved.includes(i)?' done':'');b.innerHTML=`<span>${['🍚','🥦','💧','🍎'][i%4]}</span><b>${p}</b>`;b.onclick=()=>{b.classList.toggle('done');saveProgress()};board.appendChild(b)});
+function saveProgress(){let done=[...document.querySelectorAll('.sticker')].map((x,i)=>x.classList.contains('done')?i:null).filter(x=>x!==null);localStorage.setItem('stickerProgress',JSON.stringify(done));document.querySelector('#bar').style.width=done.length/16*100+'%';document.querySelector('#progressLabel').textContent=`已完成 ${done.length} / 16`};saveProgress();
+document.querySelectorAll('[data-copy]').forEach(b=>b.onclick=async()=>{await navigator.clipboard.writeText(document.getElementById(b.dataset.copy).innerText);let t=document.querySelector('#toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1500)});
+document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-go]').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.getElementById(b.dataset.go).scrollIntoView({behavior:'smooth'})});
+document.querySelector('#search').addEventListener('input',e=>{let q=e.target.value.trim().toLowerCase();document.querySelectorAll('.searchable').forEach(s=>s.classList.toggle('hidden',q&&!((s.dataset.key+' '+s.innerText).toLowerCase().includes(q))))});
+</script></body></html>
